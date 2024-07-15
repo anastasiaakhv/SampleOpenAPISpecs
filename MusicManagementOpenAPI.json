@@ -1,0 +1,485 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MusicManagementAPI",
+    "description": "This API exposes endpoints for managing albums and concerts",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://test.com"
+    }
+  ],
+  "paths": {
+    "/albums": {
+      "post": {
+        "summary": "creates album",
+        "operationId": "createalbum",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 - new resource created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/album"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "performer": {
+                    "$ref": "#/components/schemas/musical_group"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "retrieves collection of albums",
+        "operationId": "getalbums",
+        "parameters": [
+          {
+            "name": "publication_date",
+            "in": "query",
+            "description": "Filter results based on publication_date",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Filter results based on title",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "performer",
+            "in": "query",
+            "description": "Filter results based on performer",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/musical_group"
+              }
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Filter results based on id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/album"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/albums/{id}/performers": {
+      "post": {
+        "summary": "creates performer for particular album",
+        "operationId": "createperformer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "201 - new resource created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/musical_group"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "genre": {
+                    "$ref": "#/components/schemas/music_genre"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/albums/{id}/performers/{performer_id}": {
+      "delete": {
+        "summary": "deletes particular performer from an album",
+        "operationId": "deleteperformer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "performer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204 - success with no content to return",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/concerts": {
+      "post": {
+        "summary": "creates concert",
+        "operationId": "createconcert",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/concert"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "start_time": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "end_time": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "country": {
+                    "$ref": "#/components/schemas/country"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "retrieves collection of concerts",
+        "operationId": "getconcerts",
+        "parameters": [
+          {
+            "name": "start_time",
+            "in": "query",
+            "description": "Filter results based on start_time",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "description": "Filter results based on end_time",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "official_website",
+            "in": "query",
+            "description": "Filter results based on official_website",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Filter results based on country",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/country"
+              }
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Filter results based on id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/concert"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/concerts/{id}/countries": {
+      "get": {
+        "summary": "retrieves countries of particular concert",
+        "operationId": "getconcertcountries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "capital",
+            "in": "query",
+            "description": "Filter results based on capital",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/city"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/country"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "music_genre": {
+        "type": "object",
+        "properties": {},
+        "description": "TODO: Fill in the component"
+      },
+      "musical_group": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "social_media_followers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "genre": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/music_genre"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "album": {
+        "type": "object",
+        "properties": {
+          "publication_date": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "performer": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/musical_group"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "city": {
+        "type": "object",
+        "properties": {},
+        "description": "TODO: Fill in the component"
+      },
+      "country": {
+        "type": "object",
+        "properties": {
+          "capital": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/city"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "concert": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "end_time": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "official_website": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "country": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/country"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

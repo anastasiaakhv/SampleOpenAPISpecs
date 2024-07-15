@@ -1,0 +1,438 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TouristDestinationsAPI",
+    "description": "API for tourist destination management",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://test.com"
+    }
+  ],
+  "paths": {
+    "/Touristdestinations": {
+      "get": {
+        "summary": "retrieves a collection of tourist destinations",
+        "operationId": "gettouristdests",
+        "parameters": [
+          {
+            "name": "capacity",
+            "in": "query",
+            "description": "Filter results based on capacity",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "description": "Filter results based on owner",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/human_or_person"
+              }
+            }
+          },
+          {
+            "name": "contact",
+            "in": "query",
+            "description": "Filter results based on contact",
+            "schema": {
+              "$ref": "#/components/schemas/contact"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Filter results based on id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/tourist_destination"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "creates tourist destination",
+        "operationId": "createtouristdest",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "201 - new resource created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tourist_destination"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "capacity": {
+                    "type": "integer"
+                  },
+                  "contact": {
+                    "$ref": "#/components/schemas/contact"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Touristdestinations/{id}": {
+      "put": {
+        "summary": "Full update of particular tourist destination",
+        "operationId": "fullyupdatetouristdest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204 - success with no content to return",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tourist_destination"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "deletes particular tourist destination",
+        "operationId": "deletetouristdest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204 - success with no content to return",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Touristdestinations/{id}/contacts": {
+      "post": {
+        "summary": "creates contact of tourist destination",
+        "operationId": "createcontact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "201 - new resource created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "e-mail": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "phone_number": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "has_contact": {
+                    "$ref": "#/components/schemas/workplace"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Touristdestinations/{id}/contacts/{contact_id}": {
+      "patch": {
+        "summary": "Updates email and phone number of the contact (of a  tourist dest)",
+        "operationId": "partiallyupdatecontact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 - successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "e-mail": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "phone_number": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Touristdestinations/{id}/owners": {
+      "post": {
+        "summary": "creates owner of tourist destination",
+        "operationId": "createowner",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "201 - new resource created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/human_or_person"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Touristdestinations/{id}/owners/{owner_id}": {
+      "delete": {
+        "summary": "removes particular owner from tourist destination",
+        "operationId": "deleteowner",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "owner_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204 - success with no content to return",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "human_or_person": {
+        "type": "object",
+        "properties": {},
+        "description": "TODO: Fill in the component"
+      },
+      "workplace": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "contact": {
+        "type": "object",
+        "properties": {
+          "e-mail": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "url": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "number",
+            "format": "double"
+          },
+          "has_contact": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workplace"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "tourist_destination": {
+        "type": "object",
+        "properties": {
+          "capacity": {
+            "type": "integer"
+          },
+          "owner": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/human_or_person"
+            }
+          },
+          "contact": {
+            "$ref": "#/components/schemas/contact"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "capacity",
+          "contact"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
